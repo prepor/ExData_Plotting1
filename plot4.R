@@ -11,15 +11,17 @@ data1 <- within(data, datetime <- strptime(paste(Date, Time, sep = " "), format 
 png(filename = "plot4.png", width = 480, height = 480)
 par(mfrow = c(2, 2))
 
-with(data1, plot(datetime, Global_active_power, 
-                 type = "l", 
-                 ylab = "Global Active Power", 
-                 xlab = NA))
-with(data1, plot(datetime, Voltage, 
-                 type = "l", 
-                 ylab = "Voltage"))
-
-with(data1, {
+with(data1, 
+{
+  plot(datetime, Global_active_power, 
+       type = "l", 
+       ylab = "Global Active Power", 
+       xlab = NA)
+  
+  plot(datetime, Voltage, 
+       type = "l", 
+       ylab = "Voltage")
+  
   lines <- list(list(title = "Sub_metering_1", 
                      color = "black", 
                      data = Sub_metering_1),
@@ -29,6 +31,7 @@ with(data1, {
                 list(title = "Sub_metering_3", 
                      color = "blue", 
                      data = Sub_metering_3))
+  
   plot(rep(datetime, length(lines)), 
        do.call(c, lapply(lines, function(l) l$data)), 
        type = "n", 
@@ -43,8 +46,9 @@ with(data1, {
          lty = rep(1, length(lines)), 
          lwd = rep(1, length(lines)), 
          col = sapply(lines, function(l) l$color))
+  
+  plot(datetime, Global_reactive_power, type = "l")
 })
 
-with(data1, plot(datetime, Global_reactive_power, type = "l"))
 
 dev.off()
